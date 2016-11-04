@@ -13,12 +13,16 @@ public class Operand extends CalcTreeNode {
 
     @Override
     public CalcTreeNode insert(CalcTreeNode parent) {
-        //TODO
+        parent.setRightOperand(this);
         return parent;
     }
 
     @Override
     public double evaluate() {
+        /*
+         * even though Operand has left and right children, just force return its value when
+         * evaluate is called since we can't check children's without conditionals
+         */
         return mValue;
     }
 }
