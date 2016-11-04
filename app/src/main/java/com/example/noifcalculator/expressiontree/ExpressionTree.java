@@ -11,8 +11,8 @@ public class ExpressionTree {
     private CalcTreeNode mLastUsedOp; //for inserting */
     private OperatorState mOperatorState;
 
-    public interface OperatorState {
-        public void onMultiplyDivideOpInput(Operator operator);
+    private interface OperatorState {
+        void onMultiplyDivideOpInput(Operator operator);
     }
 
     private final OperatorState NO_ROOT_OP = new OperatorState() {
@@ -63,16 +63,13 @@ public class ExpressionTree {
     public void resetTree() {
         mTreeRoot = new Operand(0);
         mLastUsedOp = mTreeRoot;
+        mOperatorState = NO_ROOT_OP;
     }
 
     public void inputNumber(double number) {
         CalcTreeNode operand = new Operand(number);
         getLastUsedOp().setRightOperand(operand);
 //        operand.insert(this);
-    }
-
-    public void insertNode(CalcTreeNode node) {
-        node.insert(this);
     }
 
     public CalcTreeNode getTreeRoot() {
@@ -115,4 +112,10 @@ public class ExpressionTree {
         mLastUsedOp = operator;
         mTreeRoot.setRightOperand(operator);
     }
+
+    //TODO check divide by 0 !!!
+    /* state - divide op is last used op,
+     *     operand is input, and followed by inserting a new operator or enter.
+     *
+     */
 }

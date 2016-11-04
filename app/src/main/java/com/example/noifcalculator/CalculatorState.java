@@ -1,6 +1,5 @@
 package com.example.noifcalculator;
 
-import com.example.noifcalculator.expressiontree.Operator;
 import com.example.noifcalculator.expressiontree.OperatorInserter;
 
 /**
@@ -8,8 +7,7 @@ import com.example.noifcalculator.expressiontree.OperatorInserter;
  */
 
 public interface CalculatorState {
-    public abstract void handleOperand(double number);
-    public abstract void handleOperator(Operator operator);
-    public abstract double handleEnter();
-    public abstract void handleOperator(OperatorInserter inserter);
+    void handleOperand(double number);
+    void handleEnter();
+    void handleOperator(OperatorInserter inserter);
 }

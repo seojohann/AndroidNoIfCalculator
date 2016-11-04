@@ -7,14 +7,4 @@ package com.example.noifcalculator.expressiontree;
 
 public abstract class Operator extends CalcTreeNode {
 
-
-
-    @Override
-    public CalcTreeNode insert(CalcTreeNode parent) {
-        this.setLeftOperand(parent.getRightOperand());
-        parent.setRightOperand(this);
-        return parent;
-    }
-
-
 }

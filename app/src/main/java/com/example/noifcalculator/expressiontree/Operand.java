@@ -14,17 +14,6 @@ public class Operand extends CalcTreeNode {
     }
 
     @Override
-    public CalcTreeNode insert(CalcTreeNode parent) {
-        parent.setRightOperand(this);
-        return parent;
-    }
-
-    @Override
-    public void insert(ExpressionTree tree) {
-        insert(tree.getLastUsedOp());
-    }
-
-    @Override
     public double evaluate() {
         /*
          * even though Operand has left and right children, just force return its value when

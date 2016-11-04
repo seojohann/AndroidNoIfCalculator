@@ -10,9 +10,6 @@ public abstract class CalcTreeNode {
     protected CalcTreeNode mRightOperand;
 
     public abstract double evaluate();
-    public abstract CalcTreeNode insert(CalcTreeNode parent);
-    //TODO need to figure out substituing ExpressionTree to avoid coupling.. Interface probably
-    public abstract void insert(ExpressionTree tree);
 
     public void setLeftOperand(CalcTreeNode leftOperand) {
         mLeftOperand = leftOperand;
