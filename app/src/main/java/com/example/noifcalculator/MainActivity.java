@@ -7,6 +7,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.noifcalculator.expressiontree.AddOperator;
+import com.example.noifcalculator.expressiontree.Operand;
+import com.example.noifcalculator.expressiontree.Operator;
+
 public class MainActivity extends Activity {
 
     private Button mBtn_0;

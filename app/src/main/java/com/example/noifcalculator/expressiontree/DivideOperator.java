@@ -1,10 +1,10 @@
-package com.example.noifcalculator;
+package com.example.noifcalculator.expressiontree;
 
 /**
  * Created by seojohann on 11/3/16.
  */
 
-public class DivideOperator extends Operator {
+public class DivideOperator extends OperatorMultDivide {
     public DivideOperator() { }
 
     @Override

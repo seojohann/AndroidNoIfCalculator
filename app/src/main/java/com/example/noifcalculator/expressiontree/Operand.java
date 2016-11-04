@@ -1,4 +1,4 @@
-package com.example.noifcalculator;
+package com.example.noifcalculator.expressiontree;
 
 /**
  * Created by seojohann on 11/3/16.
@@ -9,6 +9,12 @@ public class Operand extends CalcTreeNode {
 
     public Operand(double value) {
         mValue = value;
+    }
+
+    @Override
+    public CalcTreeNode insert(CalcTreeNode parent) {
+        //TODO
+        return parent;
     }
 
     @Override
