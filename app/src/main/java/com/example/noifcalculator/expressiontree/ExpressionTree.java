@@ -99,7 +99,7 @@ public class ExpressionTree {
     }
 
     private void insertMultDivOperator(Operator operator) {
-        operator.setLeftOperand(mLastUsedOp);
+        operator.setLeftOperand(mLastUsedOp.getRightOperand());
         mLastUsedOp.setRightOperand(operator);
         mLastUsedOp = operator;
     }
