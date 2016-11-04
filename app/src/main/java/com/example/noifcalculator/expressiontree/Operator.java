@@ -11,8 +11,8 @@ public abstract class Operator extends CalcTreeNode {
 
     @Override
     public CalcTreeNode insert(CalcTreeNode parent) {
-        this.setLeftOperand(parent);
-        parent = this;
+        this.setLeftOperand(parent.getRightOperand());
+        parent.setRightOperand(this);
         return parent;
     }
 

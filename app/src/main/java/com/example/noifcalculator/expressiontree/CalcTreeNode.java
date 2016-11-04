@@ -11,11 +11,19 @@ public abstract class CalcTreeNode {
 
     public abstract double evaluate();
     public abstract CalcTreeNode insert(CalcTreeNode parent);
+    //TODO need to figure out substituing ExpressionTree to avoid coupling.. Interface probably
+    public abstract void insert(ExpressionTree tree);
 
     public void setLeftOperand(CalcTreeNode leftOperand) {
         mLeftOperand = leftOperand;
     }
     public void setRightOperand(CalcTreeNode rightOperand) {
         mRightOperand = rightOperand;
+    }
+    public CalcTreeNode getLeftOperand() {
+        return mLeftOperand;
+    }
+    public CalcTreeNode getRightOperand() {
+        return mRightOperand;
     }
 }

@@ -5,4 +5,10 @@ package com.example.noifcalculator.expressiontree;
  */
 
 public abstract class OperatorAddSubtract extends Operator {
+    @Override
+    public void insert(ExpressionTree tree) {
+        //use the root node to insert +- operator
+        tree.setLastUsedOp(insert(tree.getTreeRoot().getRightOperand()));
+
+    }
 }

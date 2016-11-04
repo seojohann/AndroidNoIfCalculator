@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.noifcalculator.expressiontree.AddOperator;
-import com.example.noifcalculator.expressiontree.Operand;
-import com.example.noifcalculator.expressiontree.Operator;
 
 public class MainActivity extends Activity {
+
+    private static final String OP_FORMAT = " %s ";
 
     private Button mBtn_0;
     private Button mBtn_1;
@@ -33,6 +30,8 @@ public class MainActivity extends Activity {
 
     private Calculator mCalculator;
 
+    private StringBuffer mStringBuffer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +39,7 @@ public class MainActivity extends Activity {
 
         initViews();
         setClickListeners();
+        initCalculator();
     }
 
     private void initViews() {
@@ -62,20 +62,24 @@ public class MainActivity extends Activity {
         mBtn_divide = (Button)findViewById(R.id.btn_divide);
 
         mBtn_enter = (Button)findViewById(R.id.btn_enter);
+
+        mStringBuffer = new StringBuffer();
     }
 
     private void setClickListeners() {
         setOperandListeners();
+        setOperatorListeners();
     }
 
     private View.OnClickListener mOperandClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Button thisButton = (Button)v;
-            double value = Double.parseDouble(thisButton.getText().toString());
-            Operand operand = new Operand(value);
-            //TODO insert operand to calculator model/context..
-            Toast.makeText(getApplicationContext(), (int)value + " pressed", Toast.LENGTH_SHORT).show();
+            String buttonString = thisButton.getText().toString();
+            double value = Double.parseDouble(buttonString);
+            mCalculator.inputOperand(value);
+            mStringBuffer.append(buttonString);
+            mTV_input.setText(mStringBuffer.toString());
         }
     };
 
@@ -95,13 +99,67 @@ public class MainActivity extends Activity {
     private View.OnClickListener mAddClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Operator operator = new AddOperator();
-            //TODO insert operator to calculator model/context..
+            Button thisButton = (Button)v;
+            String buttonString = thisButton.getText().toString();
+            buttonString = String.format(OP_FORMAT, buttonString);
+            mStringBuffer.append(buttonString);
+            mTV_input.setText(mStringBuffer.toString());
+            mCalculator.inputAddOp();
+        }
+    };
+
+    private View.OnClickListener mSubtractClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button thisButton = (Button)v;
+            String buttonString = thisButton.getText().toString();
+            buttonString = String.format(OP_FORMAT, buttonString);
+            mStringBuffer.append(buttonString);
+            mTV_input.setText(mStringBuffer.toString());
+            mCalculator.inputSubtractOp();
+        }
+    };
+
+    private View.OnClickListener mMultiplyClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button thisButton = (Button)v;
+            String buttonString = thisButton.getText().toString();
+            buttonString = String.format(OP_FORMAT, buttonString);
+            mStringBuffer.append(buttonString);
+            mTV_input.setText(mStringBuffer.toString());
+            mCalculator.inputMultiplyOp();
+        }
+    };
+
+    private View.OnClickListener mDivideClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Button thisButton = (Button)v;
+            String buttonString = thisButton.getText().toString();
+            buttonString = String.format(OP_FORMAT, buttonString);
+            mStringBuffer.append(buttonString);
+            mTV_input.setText(mStringBuffer.toString());
+            mCalculator.inputDivideOp();
+        }
+    };
+
+    private View.OnClickListener mEnterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            double answer = mCalculator.evaluate();
+            mStringBuffer.append(" = " + answer);
+            mTV_input.setText(mStringBuffer.toString());
+            mStringBuffer = new StringBuffer();
         }
     };
 
     private void setOperatorListeners() {
         mBtn_add.setOnClickListener(mAddClickListener);
+        mBtn_subtract.setOnClickListener(mSubtractClickListener);
+        mBtn_multiply.setOnClickListener(mMultiplyClickListener);
+        mBtn_divide.setOnClickListener(mDivideClickListener);
+        mBtn_enter.setOnClickListener(mEnterClickListener);
     }
 
     private void initCalculator() {
