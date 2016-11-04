@@ -1,9 +1,9 @@
 package com.example.noifcalculator.expressiontree;
 
 /**
- * Created by seojohann on 11/4/16.
+ * Use this interface to when inserting to a tree. used to distinguish which operator it's
+ * inserting
  */
-
 public interface OperatorInserter {
-    public void insertOperator();
+    void insertOperator();
 }

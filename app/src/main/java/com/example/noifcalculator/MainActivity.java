@@ -148,8 +148,6 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
             double answer = mCalculator.evaluate();
-            mStringBuffer.append(" = ").append(answer);
-            mTV_input.setText(mStringBuffer.toString());
             mStringBuffer = new StringBuffer();
         }
     };

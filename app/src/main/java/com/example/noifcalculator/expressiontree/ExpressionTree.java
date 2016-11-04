@@ -2,6 +2,9 @@ package com.example.noifcalculator.expressiontree;
 
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by seojohann on 11/3/16.
  */
@@ -11,9 +14,21 @@ public class ExpressionTree {
     private CalcTreeNode mLastUsedOp; //for inserting */
     private OperatorState mOperatorState;
 
+    private Map<Boolean, DivisorCheck> mDivisorCheckMap;
+
+    public interface DivisorErrorHandler {
+        void onError();
+    }
+
     private interface OperatorState {
         void onMultiplyDivideOpInput(Operator operator);
     }
+
+    interface DivisorCheck {
+        void postCheck(CalcTreeNode operand);
+    }
+
+    private DivisorErrorHandler mDivisorErrorHandler;
 
     private final OperatorState NO_ROOT_OP = new OperatorState() {
         @Override
@@ -27,7 +42,6 @@ public class ExpressionTree {
         @Override
         public void onMultiplyDivideOpInput(Operator operator) {
             //multiply or divide doesn't change the root when current root op is add or subtract
-            Log.d("jsbomb", "should do nothing");
             insertMultDivOperator(operator);
             mOperatorState = MULTI_DIV_LAST_USED_OP;
         }
@@ -47,13 +61,35 @@ public class ExpressionTree {
         }
     };
 
+    private final DivisorCheck ZERO_DIVISOR = new DivisorCheck() {
+        @Override
+        public void postCheck(CalcTreeNode operand) {
+            mDivisorErrorHandler.onError();
+        }
+    } ;
+
+    private final DivisorCheck NONZERO_DIVISOR = new DivisorCheck() {
+        @Override
+        public void postCheck(CalcTreeNode operand) {
+            getLastUsedOp().setRightOperand(operand);
+        }
+    };
+
     public ExpressionTree() {
-        mTreeRoot = new Operand(0);
-        mLastUsedOp = mTreeRoot;
-        mOperatorState = NO_ROOT_OP;
+        resetTree();
+
+        mDivisorCheckMap = new HashMap<>();
+        mDivisorCheckMap.put(true, ZERO_DIVISOR);
+        mDivisorCheckMap.put(false, NONZERO_DIVISOR);
+    }
+
+    public ExpressionTree(DivisorErrorHandler handler) {
+        this();
+        mDivisorErrorHandler = handler;
     }
 
     public double evaluate() {
+        Log.d("jsbomb", mTreeRoot.getRightOperand().printToString());
         double result = mTreeRoot.getRightOperand().evaluate();
         resetTree();
         mOperatorState = NO_ROOT_OP;
@@ -68,20 +104,9 @@ public class ExpressionTree {
 
     public void inputNumber(double number) {
         CalcTreeNode operand = new Operand(number);
-        getLastUsedOp().setRightOperand(operand);
-//        operand.insert(this);
-    }
-
-    public CalcTreeNode getTreeRoot() {
-        return mTreeRoot;
-    }
-
-    public CalcTreeNode getLastUsedOp() {
-        return mLastUsedOp;
-    }
-
-    protected void setLastUsedOp(CalcTreeNode recentlyUsedOp) {
-        mLastUsedOp = recentlyUsedOp;
+        boolean isDivisor = (mLastUsedOp instanceof DivideOperator) && number == 0;
+        DivisorCheck checker = mDivisorCheckMap.get(isDivisor);
+        checker.postCheck(operand);
     }
 
     public void insertAddSubtractOperator(Operator operator) {
@@ -113,9 +138,19 @@ public class ExpressionTree {
         mTreeRoot.setRightOperand(operator);
     }
 
-    //TODO check divide by 0 !!!
-    /* state - divide op is last used op,
-     *     operand is input, and followed by inserting a new operator or enter.
-     *
-     */
+    public CalcTreeNode getTreeRoot() {
+        return mTreeRoot;
+    }
+
+    public CalcTreeNode getLastUsedOp() {
+        return mLastUsedOp;
+    }
+
+    protected void setLastUsedOp(CalcTreeNode recentlyUsedOp) {
+        mLastUsedOp = recentlyUsedOp;
+    }
+
+    public void setZeroDivisorErrorHandler(DivisorErrorHandler handler) {
+        mDivisorErrorHandler = handler;
+    }
 }

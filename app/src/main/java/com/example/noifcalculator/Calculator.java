@@ -24,6 +24,36 @@ public class Calculator {
 
     private TextView mTextView;
 
+
+    private ExpressionTree.DivisorErrorHandler mZeroDivisorErrorHandler =
+            new ExpressionTree.DivisorErrorHandler() {
+        @Override
+        public void onError() {
+
+            resetExpression();
+
+            mTextView.setText(R.string.zero_divisor_error_msg);
+        }
+    };
+
+    /**
+     * calculator state - there are times when certain keys shouldn't be handled depending on
+     * the state of the calculator
+     */
+    abstract class CalculatorState {
+        void handleOperand(double number) { }
+        void insertOperand() { mExpressionTree.inputNumber(mNumber); }
+        void handleEnter(OperatorInserter inserter) { }
+
+        /**
+         * operator is considered to insert to expression tree
+         * @param inserter - use inserter to distinguish which operator is being inserted
+         */
+        void handleOperator(OperatorInserter inserter) { }
+
+        void evaluate() { }
+    }
+
     /**
      * initial state of calculator. calculator also returns to this state after evaluating
      * expression. can only accept operand in this state and go to FIRST_OPERATOR state after
@@ -42,31 +72,13 @@ public class Calculator {
         }
 
         @Override
-        public void handleEnter() {
+        public void handleEnter(OperatorInserter inserter) {
             //do nothing since nothing is there to evaluate
         }
-    };
-
-    /**
-     * state where a single digit number is entered. calculator can accept additional number input,
-     * operator, or enter. in case of inserting an operator, move to POST_OPERATOR afterward.
-     */
-    private final CalculatorState FIRST_OPERATOR = new CalculatorState() {
-        @Override
-        public void handleOperand(double number) {
-            inputNumber(number);
-        }
 
         @Override
-        public void handleOperator(OperatorInserter inserter) {
-            inserter.insertOperator();
-            mStateMachine = POST_OPERATOR;
-        }
-
-        @Override
-        public void handleEnter() {
-            double answer = evaluate();
-            resetExpression();
+        public void evaluate() {
+            //can't evaluate
         }
     };
 
@@ -88,9 +100,15 @@ public class Calculator {
         }
 
         @Override
-        public void handleEnter() {
-            double answer = evaluate();
-            resetExpression();
+        public void handleEnter(OperatorInserter inserter) {
+            inserter.insertOperator();
+        }
+
+        @Override
+        public void evaluate() {
+            //should be able to evaluate
+            double result = mExpressionTree.evaluate();
+            mTextView.setText(String.valueOf(result));
         }
     };
 
@@ -110,13 +128,19 @@ public class Calculator {
         }
 
         @Override
-        public void handleEnter() {
+        public void handleEnter(OperatorInserter inserter) {
             //do nothing since expression is not complete
+        }
+
+        @Override
+        public void evaluate() {
+            //can't evaluate
         }
     };
 
     public Calculator(TextView textView) {
         mExpressionTree = new ExpressionTree();
+        mExpressionTree.setZeroDivisorErrorHandler(mZeroDivisorErrorHandler);
         mStateMachine = CLEARED_STATE;
         mNumber = 0;
         mTextView = textView;
@@ -133,7 +157,6 @@ public class Calculator {
     private OperatorInserter addInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.inputNumber(mNumber);
             mExpressionTree.insertAddSubtractOperator(new AddOperator());
             mNumber = 0;
         }
@@ -142,7 +165,6 @@ public class Calculator {
     private OperatorInserter subtractInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.inputNumber(mNumber);
             mExpressionTree.insertAddSubtractOperator(new SubtractOperator());
             mNumber = 0;
         }
@@ -151,7 +173,6 @@ public class Calculator {
     private OperatorInserter multiplyInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.inputNumber(mNumber);
             mExpressionTree.insertMultiplyDivideOperator(new MultiplyOperator());
             mNumber = 0;
         }
@@ -160,34 +181,44 @@ public class Calculator {
     private OperatorInserter divideInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.inputNumber(mNumber);
             mExpressionTree.insertMultiplyDivideOperator(new DivideOperator());
             mNumber = 0;
         }
     };
 
+    private OperatorInserter enterInserter = new OperatorInserter() {
+        @Override
+        public void insertOperator() {
+            mNumber = 0;
+            //and now evaluate the expression tree
+            mStateMachine.evaluate();
+        }
+    };
+
     public void inputAddOp() {
+        mStateMachine.insertOperand();
         mStateMachine.handleOperator(addInserter);
     }
 
     public void inputSubtractOp() {
+        mStateMachine.insertOperand();
         mStateMachine.handleOperator(subtractInserter);
     }
 
     public void inputMultiplyOp() {
+        mStateMachine.insertOperand();
         mStateMachine.handleOperator(multiplyInserter);
     }
 
     public void inputDivideOp() {
+        mStateMachine.insertOperand();
         mStateMachine.handleOperator(divideInserter);
     }
 
     public double evaluate() {
-        //put the right operand to the tree
-        mExpressionTree.inputNumber(mNumber);
-        mNumber = 0;
-        //and now evaluate the expression tree
-        return mExpressionTree.evaluate();
+        mStateMachine.insertOperand();
+        mStateMachine.handleEnter(enterInserter);
+        return 0;
     }
 
     public void resetExpression() {

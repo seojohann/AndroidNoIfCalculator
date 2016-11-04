@@ -23,4 +23,6 @@ public abstract class CalcTreeNode {
     public CalcTreeNode getRightOperand() {
         return mRightOperand;
     }
+
+    public abstract String printToString();
 }
