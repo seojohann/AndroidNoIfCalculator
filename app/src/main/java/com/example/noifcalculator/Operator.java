@@ -5,16 +5,16 @@ package com.example.noifcalculator;
  * operators evaluates its left and right operands
  */
 
-public abstract class Operator extends CalculatorInput {
+public abstract class Operator extends CalcTreeNode {
 
-    protected CalculatorInput mLeftOperand;
-    protected CalculatorInput mRightOperand;
+    protected CalcTreeNode mLeftOperand;
+    protected CalcTreeNode mRightOperand;
 
-    public void setLeftOperand(CalculatorInput leftOperand) {
+    public void setLeftOperand(CalcTreeNode leftOperand) {
         mLeftOperand = leftOperand;
     }
 
-    public void setRightOperand(CalculatorInput rightOperand) {
+    public void setRightOperand(CalcTreeNode rightOperand) {
         mRightOperand = rightOperand;
     }
 }

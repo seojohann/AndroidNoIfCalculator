@@ -5,6 +5,6 @@ package com.example.noifcalculator;
  * any input on calculator. it could be a number/operand or operator(+,-,*,/)
  */
 
-public abstract class CalculatorInput {
+public abstract class CalcTreeNode {
     public abstract double evaluate();
 }

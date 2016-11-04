@@ -4,7 +4,7 @@ package com.example.noifcalculator;
  * Created by seojohann on 11/3/16.
  */
 
-public class Operand extends CalculatorInput {
+public class Operand extends CalcTreeNode {
     private double mValue;
 
     public Operand(double value) {

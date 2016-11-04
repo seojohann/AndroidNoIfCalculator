@@ -27,6 +27,8 @@ public class MainActivity extends Activity {
 
     private TextView mTV_input;
 
+    private Calculator mCalculator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,5 +98,9 @@ public class MainActivity extends Activity {
 
     private void setOperatorListeners() {
         mBtn_add.setOnClickListener(mAddClickListener);
+    }
+
+    private void initCalculator() {
+        mCalculator = new Calculator();
     }
 }

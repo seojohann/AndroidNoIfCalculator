@@ -5,17 +5,17 @@ package com.example.noifcalculator;
  */
 
 public class Calculator {
-    private CalculatorInput mCalculatorInput;
+    private CalcTreeNode mExpressionTree;
 
     public Calculator() {
 
     }
 
-    public void insertCalculatorInput(CalculatorInput input) {
-        mCalculatorInput = input;
+    public void userInput() {
+
     }
 
     public double evaluate() {
-        return mCalculatorInput.evaluate();
+        return mExpressionTree.evaluate();
     }
 }
