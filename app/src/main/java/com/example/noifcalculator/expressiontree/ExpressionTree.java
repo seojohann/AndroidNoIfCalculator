@@ -7,6 +7,9 @@ import java.util.Map;
 
 /**
  * Created by seojohann on 11/3/16.
+ * expression tree to represent user entered arithmetic calculation. binary expression tree is
+ * chosen to evaluate operators with higher precedence prior to lower ones by making its operands
+ * to its leaf nodes. expression will then evaluate from bottom up until root.
  * Two nodes are there to keep track of 1. tree root, which is needed for evaluating the expression
  * 2. last used operator, to insert operand. both nodes are used for inserting operators as well.
  */
@@ -38,7 +41,7 @@ public class ExpressionTree {
     /**
      * checker for divide by 0 error
      */
-    interface DivisorCheck {
+    private interface DivisorCheck {
         void postCheck(CalcTreeNode operand);
     }
 
@@ -127,7 +130,7 @@ public class ExpressionTree {
     }
 
     public double evaluate() {
-        Log.d("jsbomb", mTreeRoot.getRightOperand().printToString());
+        Log.d("jsbomb", "evaluating : " + mTreeRoot.getRightOperand().printToString());
         double result = mTreeRoot.getRightOperand().evaluate();
         resetTree();
         mOperatorState = NO_ROOT_OP;

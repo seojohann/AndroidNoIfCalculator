@@ -6,6 +6,7 @@ import com.example.noifcalculator.expressiontree.AddOperator;
 import com.example.noifcalculator.expressiontree.DivideOperator;
 import com.example.noifcalculator.expressiontree.ExpressionTree;
 import com.example.noifcalculator.expressiontree.MultiplyOperator;
+import com.example.noifcalculator.expressiontree.Operator;
 import com.example.noifcalculator.expressiontree.OperatorInserter;
 import com.example.noifcalculator.expressiontree.SubtractOperator;
 
@@ -24,6 +25,7 @@ public class Calculator {
     private double mNumber;
 
     private TextView mTextView;
+    private StringBuffer mExpressionString;
 
     /**
      * calculator state - there are times when certain keys shouldn't be handled depending on
@@ -39,7 +41,7 @@ public class Calculator {
         /**
          * can calculator handle and insert operand to expression tree in current state?
          */
-        void insertOperand() { mExpressionTree.inputNumber(mNumber); }
+        void insertOperand() { }
 
         /**
          * can calculator handle enter action and evaluate the expression tree in current state?
@@ -105,6 +107,12 @@ public class Calculator {
         }
 
         @Override
+        void insertOperand() {
+            mExpressionString.append((int)mNumber);
+            mExpressionTree.inputNumber(mNumber);
+        }
+
+        @Override
         public void handleEnter(OperatorInserter inserter) {
             inserter.insertOperator();
         }
@@ -112,8 +120,12 @@ public class Calculator {
         @Override
         public void evaluate() {
             //should be able to evaluate
+            mExpressionString.append("\n");
             double result = mExpressionTree.evaluate();
-            mTextView.setText(String.valueOf(result));
+            mExpressionString.append(result);
+            mTextView.setText(mExpressionString.toString());
+            mExpressionString = new StringBuffer();
+            mStateMachine = CLEARED_STATE;
         }
     };
 
@@ -155,6 +167,7 @@ public class Calculator {
         mStateMachine = CLEARED_STATE;
         mNumber = 0;
         mTextView = textView;
+        mExpressionString = new StringBuffer();
     }
 
     /**
@@ -163,8 +176,14 @@ public class Calculator {
      */
     private void inputNumber(double number) {
         mNumber = mNumber * 10 + number;
+        String expression = mExpressionString.toString() + (int)mNumber;
+        mTextView.setText(expression);
     }
 
+    /**
+     * handled operand after cheking current calculator state
+     * @param number
+     */
     public void inputOperand(double number) {
         mStateMachine.handleOperand(number);
     }
@@ -175,7 +194,10 @@ public class Calculator {
     private OperatorInserter addInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.insertAddSubtractOperator(new AddOperator());
+            Operator op = new AddOperator();
+            mExpressionString.append(op.getOperatorSign());
+            mTextView.setText(mExpressionString);
+            mExpressionTree.insertAddSubtractOperator(op);
             mNumber = 0;
         }
     };
@@ -186,7 +208,10 @@ public class Calculator {
     private OperatorInserter subtractInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.insertAddSubtractOperator(new SubtractOperator());
+            Operator op = new SubtractOperator();
+            mExpressionString.append(op.getOperatorSign());
+            mTextView.setText(mExpressionString);
+            mExpressionTree.insertAddSubtractOperator(op);
             mNumber = 0;
         }
     };
@@ -197,7 +222,10 @@ public class Calculator {
     private OperatorInserter multiplyInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.insertMultiplyDivideOperator(new MultiplyOperator());
+            Operator op = new MultiplyOperator();
+            mExpressionString.append(op.getOperatorSign());
+            mTextView.setText(mExpressionString);
+            mExpressionTree.insertMultiplyDivideOperator(op);
             mNumber = 0;
         }
     };
@@ -208,7 +236,10 @@ public class Calculator {
     private OperatorInserter divideInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
-            mExpressionTree.insertMultiplyDivideOperator(new DivideOperator());
+            Operator op = new DivideOperator();
+            mExpressionString.append(op.getOperatorSign());
+            mTextView.setText(mExpressionString);
+            mExpressionTree.insertMultiplyDivideOperator(op);
             mNumber = 0;
         }
     };
@@ -262,6 +293,7 @@ public class Calculator {
         mExpressionTree.resetTree();
         mNumber = 0;
         mStateMachine = CLEARED_STATE;
+        mExpressionString = new StringBuffer();
         mTextView.setText(EMPTY);
     }
 }

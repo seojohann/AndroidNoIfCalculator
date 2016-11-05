@@ -23,5 +23,9 @@ public abstract class CalcTreeNode {
         return mRightOperand;
     }
 
+    /**
+     * string representation for the expression, operator, and operand
+     * @return
+     */
     public abstract String printToString();
 }

@@ -5,5 +5,5 @@ package com.example.noifcalculator.expressiontree;
  * operators evaluates its left and right operands
  */
 public abstract class Operator extends CalcTreeNode {
-
+    public abstract String getOperatorSign();
 }

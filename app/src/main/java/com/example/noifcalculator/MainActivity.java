@@ -30,8 +30,6 @@ public class MainActivity extends Activity {
 
     private Calculator mCalculator;
 
-    private StringBuffer mStringBuffer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +60,6 @@ public class MainActivity extends Activity {
         mBtn_divide = (Button)findViewById(R.id.btn_divide);
 
         mBtn_enter = (Button)findViewById(R.id.btn_enter);
-
-        mStringBuffer = new StringBuffer();
     }
 
     private void setClickListeners() {
@@ -78,8 +74,6 @@ public class MainActivity extends Activity {
             String buttonString = thisButton.getText().toString();
             double value = Double.parseDouble(buttonString);
             mCalculator.inputOperand(value);
-            mStringBuffer.append(buttonString);
-            mTV_input.setText(mStringBuffer.toString());
         }
     };
 
@@ -99,11 +93,6 @@ public class MainActivity extends Activity {
     private View.OnClickListener mAddClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button thisButton = (Button)v;
-            String buttonString = thisButton.getText().toString();
-            buttonString = String.format(OP_FORMAT, buttonString);
-            mStringBuffer.append(buttonString);
-            mTV_input.setText(mStringBuffer.toString());
             mCalculator.inputAddOp();
         }
     };
@@ -111,11 +100,6 @@ public class MainActivity extends Activity {
     private View.OnClickListener mSubtractClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button thisButton = (Button)v;
-            String buttonString = thisButton.getText().toString();
-            buttonString = String.format(OP_FORMAT, buttonString);
-            mStringBuffer.append(buttonString);
-            mTV_input.setText(mStringBuffer.toString());
             mCalculator.inputSubtractOp();
         }
     };
@@ -123,11 +107,6 @@ public class MainActivity extends Activity {
     private View.OnClickListener mMultiplyClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button thisButton = (Button)v;
-            String buttonString = thisButton.getText().toString();
-            buttonString = String.format(OP_FORMAT, buttonString);
-            mStringBuffer.append(buttonString);
-            mTV_input.setText(mStringBuffer.toString());
             mCalculator.inputMultiplyOp();
         }
     };
@@ -135,11 +114,6 @@ public class MainActivity extends Activity {
     private View.OnClickListener mDivideClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Button thisButton = (Button)v;
-            String buttonString = thisButton.getText().toString();
-            buttonString = String.format(OP_FORMAT, buttonString);
-            mStringBuffer.append(buttonString);
-            mTV_input.setText(mStringBuffer.toString());
             mCalculator.inputDivideOp();
         }
     };
@@ -147,8 +121,7 @@ public class MainActivity extends Activity {
     private View.OnClickListener mEnterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            double answer = mCalculator.evaluate();
-            mStringBuffer = new StringBuffer();
+            mCalculator.evaluate();
         }
     };
 

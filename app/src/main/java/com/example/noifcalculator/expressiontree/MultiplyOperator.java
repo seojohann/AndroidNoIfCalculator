@@ -24,4 +24,9 @@ public class MultiplyOperator extends OperatorMultDivide {
     public String printToString() {
         return mLeftOperand.printToString() + " * " + mRightOperand.printToString();
     }
+
+    @Override
+    public String getOperatorSign() {
+        return " * ";
+    }
 }
