@@ -11,10 +11,11 @@ import com.example.noifcalculator.expressiontree.SubtractOperator;
 
 /**
  * Created by seojohann on 11/3/16.
+ * Calculator class. it has expression tree that keeps record of user inputs. return the result as
+ * user presses "Enter" button. it also has StateMachine to filter out wrong inputs and to correctly
+ * arrange the expression into the tree.
  */
-
 public class Calculator {
-    private static final String OP_FORMAT = " %s ";
     private static final String EMPTY = "";
 
     private ExpressionTree mExpressionTree;
@@ -24,40 +25,44 @@ public class Calculator {
 
     private TextView mTextView;
 
-
-    private ExpressionTree.DivisorErrorHandler mZeroDivisorErrorHandler =
-            new ExpressionTree.DivisorErrorHandler() {
-        @Override
-        public void onError() {
-
-            resetExpression();
-
-            mTextView.setText(R.string.zero_divisor_error_msg);
-        }
-    };
-
     /**
      * calculator state - there are times when certain keys shouldn't be handled depending on
      * the state of the calculator
      */
     abstract class CalculatorState {
+        /**
+         * can calculator handle operand in current state?
+         * @param number
+         */
         void handleOperand(double number) { }
+
+        /**
+         * can calculator handle and insert operand to expression tree in current state?
+         */
         void insertOperand() { mExpressionTree.inputNumber(mNumber); }
+
+        /**
+         * can calculator handle enter action and evaluate the expression tree in current state?
+         * @param inserter
+         */
         void handleEnter(OperatorInserter inserter) { }
 
         /**
-         * operator is considered to insert to expression tree
+         * can calculator handle operator and insert it to expression tree
          * @param inserter - use inserter to distinguish which operator is being inserted
          */
         void handleOperator(OperatorInserter inserter) { }
 
+        /**
+         * can calculate evaluate the expression tree in current state?
+         */
         void evaluate() { }
     }
 
     /**
      * initial state of calculator. calculator also returns to this state after evaluating
      * expression. can only accept operand in this state and go to FIRST_OPERATOR state after
-     * accepting the first input
+     * accepting the first input. state reaches here in case of divide by 0 as well.
      */
     private final CalculatorState CLEARED_STATE = new CalculatorState() {
         @Override
@@ -140,12 +145,22 @@ public class Calculator {
 
     public Calculator(TextView textView) {
         mExpressionTree = new ExpressionTree();
-        mExpressionTree.setZeroDivisorErrorHandler(mZeroDivisorErrorHandler);
+        mExpressionTree.setZeroDivisorErrorHandler(new ExpressionTree.DivisorErrorHandler() {
+            @Override
+            public void onError() {
+                resetExpression();
+                mTextView.setText(R.string.zero_divisor_error_msg);
+            }
+        });
         mStateMachine = CLEARED_STATE;
         mNumber = 0;
         mTextView = textView;
     }
 
+    /**
+     * number button is pressed
+     * @param number -
+     */
     private void inputNumber(double number) {
         mNumber = mNumber * 10 + number;
     }
@@ -154,6 +169,9 @@ public class Calculator {
         mStateMachine.handleOperand(number);
     }
 
+    /**
+     * insert Add Operator to tree
+     */
     private OperatorInserter addInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
@@ -162,6 +180,9 @@ public class Calculator {
         }
     };
 
+    /**
+     * insert Subtract Operator to tree
+     */
     private OperatorInserter subtractInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
@@ -170,6 +191,9 @@ public class Calculator {
         }
     };
 
+    /**
+     * insert Multiply Operator to tree
+     */
     private OperatorInserter multiplyInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
@@ -178,6 +202,9 @@ public class Calculator {
         }
     };
 
+    /**
+     * insert Divide Operator to tree
+     */
     private OperatorInserter divideInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
@@ -186,6 +213,9 @@ public class Calculator {
         }
     };
 
+    /**
+     * begin evaluating the expression tree
+     */
     private OperatorInserter enterInserter = new OperatorInserter() {
         @Override
         public void insertOperator() {
@@ -195,6 +225,10 @@ public class Calculator {
         }
     };
 
+    /*
+     * inputOp methods...
+     * try to input left operand and operator after checking the calculator's state machine
+     */
     public void inputAddOp() {
         mStateMachine.insertOperand();
         mStateMachine.handleOperator(addInserter);
@@ -221,6 +255,9 @@ public class Calculator {
         return 0;
     }
 
+    /**
+     * reset expression after error occurrence
+     */
     public void resetExpression() {
         mExpressionTree.resetTree();
         mNumber = 0;

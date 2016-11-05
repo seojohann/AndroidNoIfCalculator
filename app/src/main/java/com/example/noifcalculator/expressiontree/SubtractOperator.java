@@ -1,11 +1,8 @@
 package com.example.noifcalculator.expressiontree;
 
-import android.util.Log;
-
 /**
  * Created by seojohann on 11/3/16.
  */
-
 public class SubtractOperator extends OperatorAddSubtract {
 
     public SubtractOperator() { }
@@ -16,6 +13,11 @@ public class SubtractOperator extends OperatorAddSubtract {
         double right = mRightOperand.evaluate();
         double answer = left - right;
         return answer;
+    }
+
+    @Override
+    public String toString() {
+        return printToString();
     }
 
     @Override

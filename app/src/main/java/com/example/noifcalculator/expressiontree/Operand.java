@@ -2,8 +2,8 @@ package com.example.noifcalculator.expressiontree;
 
 /**
  * Created by seojohann on 11/3/16.
+ * Operand, actual number
  */
-
 public class Operand extends CalcTreeNode {
     private double mValue;
 
@@ -20,9 +20,13 @@ public class Operand extends CalcTreeNode {
         return mValue;
     }
 
+    @Override
+    public String toString() {
+        return printToString();
+    }
 
     @Override
     public String printToString() {
-        return String.valueOf(mValue);
+        return String.valueOf((int)mValue);
     }
 }
