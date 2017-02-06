@@ -2,6 +2,11 @@ package com.example.noifcalculator.expressiontree;
 
 import android.util.Log;
 
+import com.example.noifcalculator.expressiontree.node.CalcTreeNode;
+import com.example.noifcalculator.expressiontree.node.DivideOperator;
+import com.example.noifcalculator.expressiontree.node.Operand;
+import com.example.noifcalculator.expressiontree.node.Operator;
+
 import java.util.HashMap;
 import java.util.Map;
 
