@@ -1,26 +1,29 @@
 package com.jsbomb.noifcalculator.androidTest;
 
-import com.jsbomb.noifcalculator.MainActivity;
+
 import com.jsbomb.noifcalculator.R;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.Until;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
 /**
  * Created by seojohann on 11/10/16.
  */
 @RunWith(AndroidJUnit4.class)
-public class CalculatorTest {
+public class CalculatorWaitedTest {
 
     private static final String EMPTY = "";
     private static final int B0 = R.id.btn_0;
@@ -40,9 +43,14 @@ public class CalculatorTest {
     private static final int BDIVIDE = R.id.btn_divide;
     private static final int TV_INPUT = R.id.txt_input;
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule =
-            new ActivityTestRule<>(MainActivity.class);
+    private UiDevice mUiDevice;
+
+    @Before
+    public void waitForLaunch() {
+        mUiDevice = UiDevice.getInstance(getInstrumentation());
+
+        mUiDevice.wait(Until.hasObject(By.pkg("com.jsbomb.noifcalculator").depth(0)), 10000);
+    }
 
     @Test
     public void operandTest() {
@@ -260,7 +268,7 @@ public class CalculatorTest {
     }
 
     private void checkZeroDivisorError() {
-        String errorMsg = mActivityRule.getActivity().getString(R.string.zero_divisor_error_msg);
+        String errorMsg = getInstrumentation().getTargetContext().getString(R.string.zero_divisor_error_msg);
         onView(withId(R.id.txt_input)).check(matches(withText(errorMsg)));
     }
 
