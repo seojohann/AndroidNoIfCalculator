@@ -1,4 +1,4 @@
-package com.example.noifcalculator;
+package com.jsbomb.noifcalculator;
 
 import android.app.Activity;
 import android.os.Bundle;

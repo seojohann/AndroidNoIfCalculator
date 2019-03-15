@@ -1,17 +1,16 @@
-package com.example.noifcalculator.expressiontree.node;
+package com.jsbomb.noifcalculator.expressiontree.node;
 
 /**
  * Created by seojohann on 11/3/16.
  */
-public class AddOperator extends OperatorAddSubtract {
-
-    public AddOperator() { }
+public class DivideOperator extends OperatorMultDivide {
+    public DivideOperator() { }
 
     @Override
     public double evaluate() {
         double left = mLeftOperand.evaluate();
         double right = mRightOperand.evaluate();
-        double answer = left + right;
+        double answer = left / right;
         return answer;
     }
 
@@ -22,11 +21,11 @@ public class AddOperator extends OperatorAddSubtract {
 
     @Override
     public String printToString() {
-        return mLeftOperand.printToString() + " + " + mRightOperand.printToString();
+        return mLeftOperand.printToString() + " / " + mRightOperand.printToString();
     }
 
     @Override
     public String getOperatorSign() {
-        return " + ";
+        return " / ";
     }
 }

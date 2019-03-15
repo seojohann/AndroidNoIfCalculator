@@ -1,14 +1,14 @@
-package com.example.noifcalculator;
+package com.jsbomb.noifcalculator;
 
 import android.widget.TextView;
 
-import com.example.noifcalculator.expressiontree.node.AddOperator;
-import com.example.noifcalculator.expressiontree.node.DivideOperator;
-import com.example.noifcalculator.expressiontree.ExpressionTree;
-import com.example.noifcalculator.expressiontree.node.MultiplyOperator;
-import com.example.noifcalculator.expressiontree.node.Operator;
-import com.example.noifcalculator.expressiontree.OperatorInserter;
-import com.example.noifcalculator.expressiontree.node.SubtractOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.AddOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.DivideOperator;
+import com.jsbomb.noifcalculator.expressiontree.ExpressionTree;
+import com.jsbomb.noifcalculator.expressiontree.node.MultiplyOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.Operator;
+import com.jsbomb.noifcalculator.expressiontree.OperatorInserter;
+import com.jsbomb.noifcalculator.expressiontree.node.SubtractOperator;
 
 /**
  * Created by seojohann on 11/3/16.

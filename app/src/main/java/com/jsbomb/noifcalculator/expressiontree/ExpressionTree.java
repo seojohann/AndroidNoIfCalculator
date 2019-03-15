@@ -1,11 +1,11 @@
-package com.example.noifcalculator.expressiontree;
+package com.jsbomb.noifcalculator.expressiontree;
 
 import android.util.Log;
 
-import com.example.noifcalculator.expressiontree.node.CalcTreeNode;
-import com.example.noifcalculator.expressiontree.node.DivideOperator;
-import com.example.noifcalculator.expressiontree.node.Operand;
-import com.example.noifcalculator.expressiontree.node.Operator;
+import com.jsbomb.noifcalculator.expressiontree.node.CalcTreeNode;
+import com.jsbomb.noifcalculator.expressiontree.node.DivideOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.Operand;
+import com.jsbomb.noifcalculator.expressiontree.node.Operator;
 
 import java.util.HashMap;
 import java.util.Map;

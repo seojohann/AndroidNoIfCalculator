@@ -1,11 +1,11 @@
 package com.jsbomb.noifcalculator.test;
 
-import com.example.noifcalculator.expressiontree.node.AddOperator;
-import com.example.noifcalculator.expressiontree.node.DivideOperator;
-import com.example.noifcalculator.expressiontree.node.MultiplyOperator;
-import com.example.noifcalculator.expressiontree.node.Operand;
-import com.example.noifcalculator.expressiontree.node.Operator;
-import com.example.noifcalculator.expressiontree.node.SubtractOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.AddOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.DivideOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.MultiplyOperator;
+import com.jsbomb.noifcalculator.expressiontree.node.Operand;
+import com.jsbomb.noifcalculator.expressiontree.node.Operator;
+import com.jsbomb.noifcalculator.expressiontree.node.SubtractOperator;
 
 import org.junit.Test;
 

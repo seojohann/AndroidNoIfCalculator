@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.noifcalculator.MainActivity" >
+    tools:context="com.jsbomb.noifcalculator.MainActivity" >
 
     <item
         android:id="@+id/action_settings"

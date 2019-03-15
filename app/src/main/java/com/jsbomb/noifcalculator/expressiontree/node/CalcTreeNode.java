@@ -1,4 +1,4 @@
-package com.example.noifcalculator.expressiontree.node;
+package com.jsbomb.noifcalculator.expressiontree.node;
 
 /**
  * Created by seojohann on 11/3/16.
